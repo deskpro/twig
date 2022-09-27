@@ -5,6 +5,7 @@
     "keywords": ["templating"],
     "homepage": "https://twig.symfony.com",
     "license": "BSD-3-Clause",
+    "version": "1.42.5",
     "authors": [
         {
             "name": "Fabien Potencier",
