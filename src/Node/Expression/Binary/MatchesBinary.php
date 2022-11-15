@@ -20,7 +20,7 @@ class MatchesBinary extends AbstractBinary
         $compiler
             ->raw('preg_match(')
             ->subcompile($this->getNode('right'))
-            ->raw(', ')
+            ->raw(', (string) ')
             ->subcompile($this->getNode('left'))
             ->raw(')')
         ;
