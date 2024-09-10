@@ -6,7 +6,7 @@
     "homepage": "https://twig.symfony.com",
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
-    "version": "1.44.7",
+    "version": "1.44.8",
     "authors": [
         {
             "name": "Fabien Potencier",
