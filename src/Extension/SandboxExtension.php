@@ -91,13 +91,48 @@ class SandboxExtension extends AbstractExtension
         }
     }
 
+    // Fix for CVE-2024-51754
     public function ensureToStringAllowed($obj)
     {
-        if ($this->isSandboxed() && \is_object($obj) && method_exists($obj, '__toString')) {
-            $this->policy->checkMethodAllowed($obj, '__toString');
+        if (\is_array($obj)) {
+            $this->ensureToStringAllowedForArray($obj);
+
+            return $obj;
+        }
+
+        if ($obj instanceof \Stringable && $this->isSandboxed($obj)) {
+            try {
+                $this->policy->checkMethodAllowed($obj, '__toString');
+            } catch (\Exception $e) {
+                throw $e;
+            }
         }
 
         return $obj;
+    }
+
+    private function ensureToStringAllowedForArray(array $obj): void
+    {
+        foreach ($obj as $k => $v) {
+            if (!$v) {
+                continue;
+            }
+
+            if (!\is_array($v)) {
+                $this->ensureToStringAllowed($v);
+                continue;
+            }
+
+            if ($r = \ReflectionReference::fromArrayElement($obj, $k)) {
+                if (isset($stack[$r->getId()])) {
+                    continue;
+                }
+
+                $stack[$r->getId()] = true;
+            }
+
+            $this->ensureToStringAllowedForArray($v);
+        }
     }
 
     public function getName()
