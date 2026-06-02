@@ -13,6 +13,7 @@ namespace Twig\Tests;
 
 use Twig\Compiler;
 use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class CompilerTest extends \PHPUnit\Framework\TestCase
 {
